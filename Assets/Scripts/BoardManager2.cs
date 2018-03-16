@@ -222,14 +222,10 @@ public class BoardManager : MonoBehaviour {
 		return false;
 	}
 
-	public static void removePossibleMovements(UnitScript unit)
-	{
-		for (int i = unit.position.get_x() - unit.movement; i < unit.position.get_x() + unit.movement + 1; i++)
-		{
-			for (int j = unit.position.get_y() - unit.movement; j < unit.position.get_y() + unit.movement + 1; j++)
-			{
-				if (instance.inBounds(i, j) && instance.accessTile(instance.tilemap, i, j).treadable)
-				{
+	public static void removePossibleMovements(UnitScript unit){
+		for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
+			for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
+				if (instance.inBounds(i, j) && instance.accessTile(instance.tilemap, i, j).treadable){
 					instance.resetColor(i, j, "blue");
 				}
 			}
@@ -237,68 +233,33 @@ public class BoardManager : MonoBehaviour {
 		instance.selectedUnit = null;
 	}
 
-	private void Start()
-	{
-		if (instance == null)
-		{
+	private void Start(){
+		if (instance == null){
 			instance = this;
 		}
-		else if (instance != null)
-		{
-			Object.Destroy(this.get_gameObject());
+		else if (instance != null){
+			Destroy(gameObject);
 		}
-		Object.DontDestroyOnLoad(this.get_gameObject());
+		DontDestroyOnLoad(gameObject);
 		unitPosArray = new List<List<GameObject>>();
-		int num = 0;
-		while (true)
-		{
-			int num2 = num;
-			BoundsInt cellBounds = tilemap.get_cellBounds();
-			Vector3Int size = cellBounds.get_size();
-			if (num2 < size.get_x() - 1)
-			{
-				unitPosArray.Add((List<GameObject>)new List<GameObject>());
-				int num3 = 0;
-				while (true)
-				{
-					int num4 = num3;
-					BoundsInt cellBounds2 = tilemap.get_cellBounds();
-					Vector3Int size2 = cellBounds2.get_size();
-					if (num4 < size2.get_y() - 1)
-					{
-						((List<GameObject>)unitPosArray[num]).Add(null);
-						num3++;
-						continue;
-					}
-					break;
-				}
-				num++;
-				continue;
+		for (int i = 0; i < tilemap.cellBounds.size.x-1; i++){
+			unitPosArray.Add((List<GameObject>)new List<GameObject>());
+			for (int j = 0; j < tilemap.cellBounds.size.y-1; j++){
+				((List<GameObject>)unitPosArray[i]).Add(null);
 			}
-			break;
 		}
 		selectedUnit = null;
-		GameObject val = spawnUnit(recon, 0, 0);
-		GameObject val2 = spawnUnit(recon, 1, 5);
-		moveUnit(val, 7, 3);
+		GameObject recon1 = spawnUnit(recon, 0, 0);
+		GameObject recon2 = spawnUnit(recon, 1, 5);
+		moveUnit(recon1, 7, 3);
 	}
 
-	private void Update()
-	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			Vector3 worldPos = Camera.get_main().ScreenToWorldPoint(Input.get_mousePosition());
-			SmartTile smartTile = accessTile(tilemap, this.worldToGrid(worldPos));
-			MonoBehaviour.print((object)unitPosArray.Count);
-			MonoBehaviour.print((object)((List<GameObject>)unitPosArray[0]).Count);
-			for (int i = 0; i < unitPosArray.Count; i++)
-			{
-				unitPosArray.ForEach(delegate(List<GameObject> a)
-					{
-						MonoBehaviour.print((object)("{0}\t" + a.ToString()));
-					});
-				for (int j = 0; j < ((List<GameObject>)unitPosArray[0]).Count; j++)
-				{
+	private void Update(){
+		if (Input.GetMouseButtonDown(0)){
+			Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			SmartTile smartTile = accessTile(tilemap, worldToGrid(worldPos));
+			for (int i = 0; i < unitPosArray.Count; i++){
+				for (int j = 0; j < ((List<GameObject>)unitPosArray[0]).Count; j++){
 					if (!(((List<GameObject>)unitPosArray[i])[j] != null))
 					{
 						continue;
