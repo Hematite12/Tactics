@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93754c314018ec948976bd5756358166, type: 3}
-  m_Name: GrassTileBlue
+  m_Name: BLUEGRASSTILE
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300480, guid: e7b078081c00b82418b41e39fb2e5332, type: 3}
+  m_Sprite: {fileID: 21300006, guid: e7b078081c00b82418b41e39fb2e5332, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -33,9 +33,9 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
   m_ColliderType: 1
-  tileType: Grass
-  walkable: 1
-  treadable: 1
+  tileType: 
+  walkable: 0
+  treadable: 0
   sailable: 0
-  flyable: 1
+  flyable: 0
   moveHighlighted: 0

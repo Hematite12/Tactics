@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: 33f8768fcfce0b145ab6fede09ac18ec
-timeCreated: 1521006176
+timeCreated: 1521193486
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - grid: {fileID: 2569400266857359762, guid: 9427c0da2be37a6468d94f66b3f03b01, type: 2}
+  - tilemap: {fileID: 8195094282772238830, guid: 9427c0da2be37a6468d94f66b3f03b01,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

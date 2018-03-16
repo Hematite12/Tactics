@@ -1,14 +1,14 @@
 fileFormatVersion: 2
 guid: 96733c23a28246d41bc95377a178e282
-timeCreated: 1521107980
+timeCreated: 1521194855
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - grid: {fileID: 2569400266857359762, guid: 9427c0da2be37a6468d94f66b3f03b01, type: 2}
+  - grid: {instanceID: 0}
   - tilemap: {instanceID: 0}
-  - recon: {fileID: 1682757873855958, guid: e9de78e558e58cf4c8ee486adc4a01f0, type: 2}
+  - recon: {instanceID: 0}
   - waterTile: {instanceID: 0}
   - waterTileBlue: {instanceID: 0}
   - grassTile: {instanceID: 0}

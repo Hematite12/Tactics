@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		float tileColLength = (float) tilemap.cellBounds.size.y - 1;
 		float halfCellSize = grid.cellSize.y / 2;
-		(GetComponentInParent (typeof(Camera)) as Camera).orthographicSize = tileColLength*halfCellSize;
+		//(GetComponentInParent (typeof(Camera)) as Camera).orthographicSize = tileColLength*halfCellSize;
 	}
 	
 	// Update is called once per frame
