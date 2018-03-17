@@ -45,13 +45,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public SmartTile accessTile(Vector2Int gridPos){
-		Vector3Int actualPos = gridToActual(gridPos);
-		return tilemap.GetTile(actualPos) as SmartTile;
+		return accessTile (gridPos.x, gridPos.y);
 	}
 
 	public SmartTile accessTile(Vector3Int gridPos){
-		Vector3Int actualPos = gridToActual(gridPos);
-		return tilemap.GetTile(actualPos) as SmartTile;
+		return accessTile (gridPos.x, gridPos.y);
 	}
 
 	public Vector3Int gridToActual(int xPos, int yPos){
@@ -61,15 +59,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public Vector3Int gridToActual(Vector2Int gridPos){
-		int actualX = gridPos.x + tilemap.cellBounds.position.x;
-		int actualY = gridPos.y + tilemap.cellBounds.position.y;
-		return new Vector3Int(actualX, actualY, 0);
+		return gridToActual (gridPos.x, gridPos.y);
 	}
 
 	public Vector3Int gridToActual(Vector3Int gridPos){
-		int actualX = gridPos.x + tilemap.cellBounds.position.x;
-		int actualY = gridPos.y + tilemap.cellBounds.position.y;
-		return new Vector3Int(actualX, actualY, 0);
+		return gridToActual (gridPos.x, gridPos.y);
 	}
 
 	public Vector3Int actualToGrid(int xPos, int yPos){
@@ -79,15 +73,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public Vector3Int actualToGrid(Vector2Int gridPos){
-		int actualX = gridPos.x - tilemap.cellBounds.position.x;
-		int actualY = gridPos.y - tilemap.cellBounds.position.y;
-		return new Vector3Int(actualX, actualY, 0);
+		return actualToGrid (gridPos.x, gridPos.y);
 	}
 
 	public Vector3Int actualToGrid(Vector3Int gridPos){
-		int actualX = gridPos.x - tilemap.cellBounds.position.x;
-		int actualY = gridPos.y - tilemap.cellBounds.position.y;
-		return new Vector3Int(actualX, actualY, 0);
+		return actualToGrid (gridPos.x, gridPos.y);
 	}
 
 	public Vector3 gridToWorld(int xPos, int yPos){
@@ -98,17 +88,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public Vector3 gridToWorld(Vector2Int gridPos){
-		Vector3Int actualPos = gridToActual(gridPos);
-		float worldX = (float)((0.5 + actualPos.x)*grid.cellSize.x);
-		float worldY = (float)((0.5 + actualPos.y)*grid.cellSize.y);
-		return new Vector3(worldX, worldY, 0f);
+		return gridToWorld (gridPos.x, gridPos.y);
 	}
 
 	public Vector3 gridToWorld(Vector3Int gridPos){
-		Vector3Int actualPos = gridToActual(gridPos);
-		float worldX = (float)((0.5 + actualPos.x)*grid.cellSize.x);
-		float worldY = (float)((0.5 + actualPos.y)*grid.cellSize.y);
-		return new Vector3(worldX, worldY, 0f);
+		return gridToWorld (gridPos.x, gridPos.y);
 	}
 
 	public Vector3 actualToWorld(int xPos, int yPos){
@@ -149,7 +133,7 @@ public class BoardManager : MonoBehaviour {
 
 	public bool inBounds(int xPos, int yPos){
 		if (xPos >= 0 && yPos >= 0){
-			if (xPos<tilemap.cellBounds.size.x-1 && yPos<tilemap.cellBounds.size.y-1){
+			if (xPos<tilemap.cellBounds.size.x && yPos<tilemap.cellBounds.size.y){
 				return true;
 			}
 		}
@@ -157,21 +141,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public bool inBounds(Vector2Int gridPos){
-		if (gridPos.x >= 0 && gridPos.y >= 0){
-			if (gridPos.x<tilemap.cellBounds.size.x-1 && gridPos.y<tilemap.cellBounds.size.y-1){
-				return true;
-			}
-		}
-		return false;
+		return inBounds (gridPos.x, gridPos.y);
 	}
 
 	public bool inBounds(Vector3Int gridPos){
-		if (gridPos.x >= 0 && gridPos.y >= 0){
-			if (gridPos.x<tilemap.cellBounds.size.x-1 && gridPos.y<tilemap.cellBounds.size.y-1){
-				return true;
-			}
-		}
-		return false;
+		return inBounds (gridPos.x, gridPos.y);
 	}
 
 	public void changeColor(int xPos, int yPos, string newColor){
@@ -216,17 +190,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public GameObject spawnUnit(GameObject unit, Vector2Int gridPos){
-		GameObject instantiatedUnit = Instantiate(unit, gridToWorld(gridPos.x, gridPos.y), Quaternion.identity).gameObject;
-		unitToScript (instantiatedUnit).position = new Vector2Int(gridPos.x, gridPos.y);
-		unitPosArray[gridPos.x][gridPos.y] = instantiatedUnit;
-		return instantiatedUnit;
+		return spawnUnit (unit, gridPos.x, gridPos.y);
 	}
 
 	public GameObject spawnUnit(GameObject unit, Vector3Int gridPos){
-		GameObject instantiatedUnit = Instantiate(unit, gridToWorld(gridPos.x, gridPos.y), Quaternion.identity).gameObject;
-		unitToScript (instantiatedUnit).position = new Vector2Int(gridPos.x, gridPos.y);
-		unitPosArray[gridPos.x][gridPos.y] = instantiatedUnit;
-		return instantiatedUnit;
+		return spawnUnit (unit, gridPos.x, gridPos.y);
 	}
 
 	public void moveUnit(GameObject unit, int destX, int destY){
@@ -238,19 +206,11 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public void moveUnit(GameObject unit, Vector2Int destPos){
-		unit.transform.position = gridToWorld (destPos);
-		Vector2Int unitPos = unitToScript(unit).position;
-		unitPosArray[unitPos.x][unitPos.y] = null;
-		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destPos.x, destPos.y);
-		unitPosArray[destPos.x][destPos.y] = unit;
+		moveUnit (unit, destPos.x, destPos.y);
 	}
 
 	public void moveUnit(GameObject unit, Vector3Int destPos){
-		unit.transform.position = gridToWorld (destPos);
-		Vector2Int unitPos = unitToScript(unit).position;
-		unitPosArray[unitPos.x][unitPos.y] = null;
-		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destPos.x, destPos.y);
-		unitPosArray[destPos.x][destPos.y] = unit;
+		moveUnit (unit, destPos.x, destPos.y);
 	}
 
 	public class Node {
@@ -280,14 +240,13 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 
-	public void showPossibleMovementsBFS(UnitScript unit){
+	public void showPossibleMovements(UnitScript unit){
 		Queue<Node> openSet = new Queue<Node> ();
 		HashSet<Node> closedSet = new HashSet<Node> ();
 		Node origNode = nodeArr [unit.position.x, unit.position.y];
 		origNode.moveLeft = unit.movement;
 		openSet.Enqueue (origNode);
 		while (!(openSet.Count==0)){
-			
 			Node node = openSet.Dequeue ();
 			closedSet.Add (node);
 			if (!(node == origNode)){
@@ -312,29 +271,87 @@ public class BoardManager : MonoBehaviour {
 			if (inBounds (node.x-1, node.y)){
 				westNode = nodeArr [node.x - 1, node.y];
 			}
-			if (unit.movementType == "tread"){
-				if (northNode!=null && northNode.treadable && unitPosArray[northNode.x][northNode.y]==null && !openSet.Contains(northNode) &&
-					((!closedSet.Contains (northNode)) | northNode.moveLeft < node.moveLeft - northNode.treadCost)){
+			if (northNode!=null && unitPosArray[northNode.x][northNode.y]==null && !openSet.Contains(northNode) &&
+				((!closedSet.Contains (northNode)) | northNode.moveLeft < node.moveLeft - northNode.treadCost)){
+				if (unit.movementType == "walk" && northNode.walkable){
+					northNode.moveLeft = node.moveLeft - northNode.walkCost;
+					openSet.Enqueue (northNode);
+				}
+				else if (unit.movementType == "tread" && northNode.treadable){
 					northNode.moveLeft = node.moveLeft - northNode.treadCost;
 					openSet.Enqueue (northNode);
 				}
-				if (eastNode!=null && eastNode.treadable && unitPosArray[eastNode.x][eastNode.y]==null && !openSet.Contains(eastNode) &&
-					((!closedSet.Contains (eastNode)) | eastNode.moveLeft < node.moveLeft - eastNode.treadCost)){
+				else if (unit.movementType == "sail" && northNode.sailable){
+					northNode.moveLeft = node.moveLeft - northNode.sailCost;
+					openSet.Enqueue (northNode);
+				}
+				else if (unit.movementType == "fly" && northNode.flyable){
+					northNode.moveLeft = node.moveLeft - northNode.flyCost;
+					openSet.Enqueue (northNode);
+				}
+			}
+			if (eastNode!=null && unitPosArray[eastNode.x][eastNode.y]==null && !openSet.Contains(eastNode) &&
+				((!closedSet.Contains (eastNode)) | eastNode.moveLeft < node.moveLeft - eastNode.treadCost)){
+				if (unit.movementType == "walk" && eastNode.walkable){
+					eastNode.moveLeft = node.moveLeft - eastNode.walkCost;
+					openSet.Enqueue (eastNode);
+				}
+				else if (unit.movementType == "tread" && eastNode.treadable){
 					eastNode.moveLeft = node.moveLeft - eastNode.treadCost;
 					openSet.Enqueue (eastNode);
 				}
-				if (southNode!=null && southNode.treadable && unitPosArray[southNode.x][southNode.y]==null && !openSet.Contains(southNode) &&
-					((!closedSet.Contains (southNode)) | southNode.moveLeft < node.moveLeft - southNode.treadCost)){
+				else if (unit.movementType == "sail" && eastNode.sailable){
+					eastNode.moveLeft = node.moveLeft - eastNode.sailCost;
+					openSet.Enqueue (eastNode);
+				}
+				else if (unit.movementType == "fly" && eastNode.flyable){
+					eastNode.moveLeft = node.moveLeft - eastNode.flyCost;
+					openSet.Enqueue (eastNode);
+				}
+			}
+			if (southNode!=null && unitPosArray[southNode.x][southNode.y]==null && !openSet.Contains(southNode) &&
+				((!closedSet.Contains (southNode)) | southNode.moveLeft < node.moveLeft - southNode.treadCost)){
+				if (unit.movementType == "walk" && southNode.walkable){
+					southNode.moveLeft = node.moveLeft - southNode.walkCost;
+					openSet.Enqueue (southNode);
+				}
+				else if (unit.movementType == "tread" && southNode.treadable){
 					southNode.moveLeft = node.moveLeft - southNode.treadCost;
 					openSet.Enqueue (southNode);
 				}
-				if (westNode!=null && westNode.treadable && unitPosArray[westNode.x][westNode.y]==null && !openSet.Contains(westNode) &&
-					((!closedSet.Contains (westNode)) | westNode.moveLeft < node.moveLeft - westNode.treadCost)){
+				else if (unit.movementType == "sail" && southNode.sailable){
+					southNode.moveLeft = node.moveLeft - southNode.sailCost;
+					openSet.Enqueue (southNode);
+				}
+				else if (unit.movementType == "fly" && southNode.flyable){
+					southNode.moveLeft = node.moveLeft - southNode.flyCost;
+					openSet.Enqueue (southNode);
+				}
+			}
+			if (westNode!=null && unitPosArray[westNode.x][westNode.y]==null && !openSet.Contains(westNode) &&
+				((!closedSet.Contains (westNode)) | westNode.moveLeft < node.moveLeft - westNode.treadCost)){
+				if (unit.movementType == "walk" && westNode.walkable){
+					westNode.moveLeft = node.moveLeft - westNode.walkCost;
+					openSet.Enqueue (westNode);
+				}
+				else if (unit.movementType == "tread" && westNode.treadable){
 					westNode.moveLeft = node.moveLeft - westNode.treadCost;
+					openSet.Enqueue (westNode);
+				}
+				else if (unit.movementType == "sail" && westNode.sailable){
+					westNode.moveLeft = node.moveLeft - westNode.sailCost;
+					openSet.Enqueue (westNode);
+				}
+				else if (unit.movementType == "fly" && westNode.flyable){
+					westNode.moveLeft = node.moveLeft - westNode.flyCost;
 					openSet.Enqueue (westNode);
 				}
 			}
 		}
+	}
+
+	public void showPossibleMovements(GameObject unitObject){
+		showPossibleMovements (unitToScript (unitObject));
 	}
 
 	public static void removePossibleMovements(UnitScript unit){
@@ -350,16 +367,7 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public static void removePossibleMovements(GameObject unitObject){
-		UnitScript unit = instance.unitToScript (unitObject);
-		for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
-			for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-				if (instance.inBounds (i, j)){
-					if (instance.accessTile(i, j).treadable){
-						instance.resetColor(i, j, "blue");
-					}
-				}
-			}
-		}
+		removePossibleMovements (instance.unitToScript (unitObject));
 	}
 
 	void Start(){
@@ -371,10 +379,10 @@ public class BoardManager : MonoBehaviour {
 		}
 		DontDestroyOnLoad(gameObject);
 		unitPosArray = new List<List<GameObject>>();
-		nodeArr = new Node[tilemap.cellBounds.size.x - 1, tilemap.cellBounds.size.y - 1];
-		for (int i = 0; i < tilemap.cellBounds.size.x-1; i++){
+		nodeArr = new Node[tilemap.cellBounds.size.x, tilemap.cellBounds.size.y];
+		for (int i = 0; i < tilemap.cellBounds.size.x; i++){
 			unitPosArray.Add((List<GameObject>)new List<GameObject>());
-			for (int j = 0; j < tilemap.cellBounds.size.y-1; j++){
+			for (int j = 0; j < tilemap.cellBounds.size.y; j++){
 				unitPosArray[i].Add(null);
 				SmartTile tile = accessTile (i, j);
 				nodeArr [i, j] = new Node (i, j, tile.walkable, tile.treadable, tile.sailable, tile.flyable, 
@@ -387,6 +395,8 @@ public class BoardManager : MonoBehaviour {
 		spawnUnit (recon, 2, 3);
 		spawnUnit (recon, 6, 2);
 		moveUnit(recon1, 7, 3);
+		print (tilemap.cellBounds.size.x);
+		print (tilemap.cellBounds.size.y); 
 	}
 
 	void Update(){
@@ -395,13 +405,11 @@ public class BoardManager : MonoBehaviour {
 			Vector3Int gridPos = worldToGrid (worldPos);
 			if (selectedUnit != null){
 				if (inBounds (gridPos)){
-					print("tomato");
 					if (unitPosArray[gridPos.x][gridPos.y] == selectedUnit){
 						removePossibleMovements (selectedUnit);
 						selectedUnit = null; 
 					}
 					if (accessTile (gridPos).moveHighlighted){
-						print ("onion");
 						removePossibleMovements (selectedUnit);
 						moveUnit (selectedUnit, gridPos);
 						selectedUnit = null;
@@ -411,7 +419,7 @@ public class BoardManager : MonoBehaviour {
 			else if (selectedUnit == null){
 				selectedUnit = unitPosArray [gridPos.x] [gridPos.y];
 				if (selectedUnit != null){
-					showPossibleMovementsBFS (unitToScript (selectedUnit));
+					showPossibleMovements (selectedUnit);
 				}
 			}
 		}
