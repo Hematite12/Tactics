@@ -25,7 +25,7 @@ public class BoardManager : MonoBehaviour {
 	[SerializeField]
 	public SmartTile mountainTileBlue;
 
-	public UnitScript selectedUnit;
+	public GameObject selectedUnit;
 	public List<List<GameObject>> unitPosArray;
 
 	public UnitScript unitToScript(GameObject unit){
@@ -212,6 +212,20 @@ public class BoardManager : MonoBehaviour {
 		return instantiatedUnit;
 	}
 
+	public GameObject spawnUnit(GameObject unit, Vector2Int gridPos){
+		GameObject instantiatedUnit = Instantiate(unit, gridToWorld(gridPos.x, gridPos.y), Quaternion.identity).gameObject;
+		unitToScript (instantiatedUnit).position = new Vector2Int(gridPos.x, gridPos.y);
+		unitPosArray[gridPos.x][gridPos.y] = instantiatedUnit;
+		return instantiatedUnit;
+	}
+
+	public GameObject spawnUnit(GameObject unit, Vector3Int gridPos){
+		GameObject instantiatedUnit = Instantiate(unit, gridToWorld(gridPos.x, gridPos.y), Quaternion.identity).gameObject;
+		unitToScript (instantiatedUnit).position = new Vector2Int(gridPos.x, gridPos.y);
+		unitPosArray[gridPos.x][gridPos.y] = instantiatedUnit;
+		return instantiatedUnit;
+	}
+
 	public void moveUnit(GameObject unit, int destX, int destY){
 		unit.transform.position = gridToWorld (destX, destY);
 		Vector2Int unitPos = unitToScript(unit).position;
@@ -220,21 +234,45 @@ public class BoardManager : MonoBehaviour {
 		unitPosArray[destX][destY] = unit;
 	}
 
-	public static bool showPossibleMovements(UnitScript unit){
-		if (instance.selectedUnit == null){
-			if (unit.movementType == "tread"){
-				for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
-					for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-						if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
-							instance.changeColor(i, j, "blue");
-						}
+	public void moveUnit(GameObject unit, Vector2Int destPos){
+		unit.transform.position = gridToWorld (destPos);
+		Vector2Int unitPos = unitToScript(unit).position;
+		unitPosArray[unitPos.x][unitPos.y] = null;
+		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destPos.x, destPos.y);
+		unitPosArray[destPos.x][destPos.y] = unit;
+	}
+
+	public void moveUnit(GameObject unit, Vector3Int destPos){
+		unit.transform.position = gridToWorld (destPos);
+		Vector2Int unitPos = unitToScript(unit).position;
+		unitPosArray[unitPos.x][unitPos.y] = null;
+		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destPos.x, destPos.y);
+		unitPosArray[destPos.x][destPos.y] = unit;
+	}
+
+	public static void showPossibleMovements(UnitScript unit){
+		if (unit.movementType == "tread"){
+			for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
+				for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
+					if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
+						instance.changeColor(i, j, "blue");
 					}
 				}
 			}
-			instance.selectedUnit = unit;
-			return true;
 		}
-		return false;
+	}
+
+	public static void showPossibleMovements(GameObject unitObject){
+		UnitScript unit = instance.unitToScript (unitObject);
+		if (unit.movementType == "tread"){
+			for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
+				for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
+					if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
+						instance.changeColor(i, j, "blue");
+					}
+				}
+			}
+		}
 	}
 
 	public static void removePossibleMovements(UnitScript unit){
@@ -247,7 +285,19 @@ public class BoardManager : MonoBehaviour {
 				}
 			}
 		}
-		instance.selectedUnit = null;
+	}
+
+	public static void removePossibleMovements(GameObject unitObject){
+		UnitScript unit = instance.unitToScript (unitObject);
+		for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
+			for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
+				if (instance.inBounds (i, j)){
+					if (instance.accessTile(i, j).treadable){
+						instance.resetColor(i, j, "blue");
+					}
+				}
+			}
+		}
 	}
 
 	void Start(){
@@ -276,11 +326,31 @@ public class BoardManager : MonoBehaviour {
 	void Update(){
 		if (Input.GetMouseButtonDown(0)){
 			Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Vector3Int gridPos = worldToGrid (worldPos);
 			if (selectedUnit != null){
-				Vector3Int gridPos = worldToGrid (worldPos);
 				if (inBounds (gridPos)){
-					continue;
+					if (unitPosArray[gridPos.x][gridPos.y] == selectedUnit){
+						removePossibleMovements (selectedUnit);
+						selectedUnit = null; 
+					}
+					if (accessTile (gridPos).moveHighlighted){
+						removePossibleMovements (selectedUnit);
+						moveUnit (selectedUnit, gridPos);
+						selectedUnit = null;
+					}
 				}
+			}
+			else if (selectedUnit == null){
+				selectedUnit = unitPosArray [gridPos.x] [gridPos.y];
+				if (selectedUnit != null){
+					showPossibleMovements (selectedUnit);
+				}
+			}
+		}
+		else if (Input.GetMouseButtonDown (1)){
+			if (selectedUnit != null){
+				removePossibleMovements (selectedUnit);
+				selectedUnit = null;
 			}
 		}
 	}
