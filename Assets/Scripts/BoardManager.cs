@@ -153,6 +153,24 @@ public class BoardManager : MonoBehaviour {
 		return false;
 	}
 
+	public bool inBounds(Vector2Int gridPos){
+		if (gridPos.x >= 0 & gridPos.y >= 0){
+			if (gridPos.x<tilemap.cellBounds.size.x-1 & gridPos.y<tilemap.cellBounds.size.y-1){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public bool inBounds(Vector3Int gridPos){
+		if (gridPos.x >= 0 & gridPos.y >= 0){
+			if (gridPos.x<tilemap.cellBounds.size.x-1 & gridPos.y<tilemap.cellBounds.size.y-1){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void changeColor(int xPos, int yPos, string newColor){
 		SmartTile oldTile = accessTile (xPos, yPos);
 		SmartTile newTile = oldTile;
@@ -190,16 +208,16 @@ public class BoardManager : MonoBehaviour {
 	public GameObject spawnUnit(GameObject unit, int xPos, int yPos){
 		GameObject instantiatedUnit = Instantiate(unit, gridToWorld(xPos, yPos), Quaternion.identity).gameObject;
 		unitToScript (instantiatedUnit).position = new Vector2Int(xPos, yPos);
-		((List<GameObject>)unitPosArray[xPos])[yPos] = instantiatedUnit;
+		unitPosArray[xPos][yPos] = instantiatedUnit;
 		return instantiatedUnit;
 	}
 
 	public void moveUnit(GameObject unit, int destX, int destY){
 		unit.transform.position = gridToWorld (destX, destY);
 		Vector2Int unitPos = unitToScript(unit).position;
-		((List<GameObject>)unitPosArray[unitPos.x])[unitPos.y] = null;
+		unitPosArray[unitPos.x][unitPos.y] = null;
 		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destX, destY);
-		((List<GameObject>)unitPosArray[destX])[destY] = unit;
+		unitPosArray[destX][destY] = unit;
 	}
 
 	public static bool showPossibleMovements(UnitScript unit){
@@ -207,7 +225,7 @@ public class BoardManager : MonoBehaviour {
 			if (unit.movementType == "tread"){
 				for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
 					for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-						if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable){
+						if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
 							instance.changeColor(i, j, "blue");
 						}
 					}
@@ -244,24 +262,24 @@ public class BoardManager : MonoBehaviour {
 		for (int i = 0; i < tilemap.cellBounds.size.x-1; i++){
 			unitPosArray.Add((List<GameObject>)new List<GameObject>());
 			for (int j = 0; j < tilemap.cellBounds.size.y-1; j++){
-				((List<GameObject>)unitPosArray[i]).Add(null);
+				unitPosArray[i].Add(null);
 			}
 		}
 		selectedUnit = null;
 		GameObject recon1 = spawnUnit(recon, 0, 0);
-		GameObject recon2 = spawnUnit(recon, 1, 5);
+		spawnUnit(recon, 1, 5);
+		spawnUnit (recon, 2, 3);
+		spawnUnit (recon, 6, 2);
 		moveUnit(recon1, 7, 3);
 	}
 
 	void Update(){
 		if (Input.GetMouseButtonDown(0)){
 			Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			SmartTile smartTile = accessTile(worldToGrid(worldPos));
-			for (int i = 0; i < unitPosArray.Count; i++){
-				for (int j = 0; j < ((List<GameObject>)unitPosArray[0]).Count; j++){
-					if (((List<GameObject>)unitPosArray[i])[j] != null){
-						continue;
-					}
+			if (selectedUnit != null){
+				Vector3Int gridPos = worldToGrid (worldPos);
+				if (inBounds (gridPos)){
+					continue;
 				}
 			}
 		}

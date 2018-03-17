@@ -8,11 +8,13 @@ using UnityEditor;
 public class SmartTile : Tile {
 	[SerializeField]
 	public string tileType;
+	[SerializeField]
+	public bool moveHighlighted;
+
 	public bool walkable;
 	public bool treadable;
 	public bool sailable;
 	public bool flyable;
-	public bool moveHighlighted;
 
 	public override bool StartUp (Vector3Int position, ITilemap tilemap, GameObject go)
 	{
