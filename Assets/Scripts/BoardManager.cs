@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
+using System.Configuration;
+using System.Collections;
 
 public class BoardManager : MonoBehaviour {
 	public static BoardManager instance = null;
@@ -27,6 +29,7 @@ public class BoardManager : MonoBehaviour {
 
 	public GameObject selectedUnit;
 	public List<List<GameObject>> unitPosArray;
+	public Node[,] nodeArr;
 
 	public UnitScript unitToScript(GameObject unit){
 		return unit.GetComponent(typeof(UnitScript)) as UnitScript;
@@ -275,6 +278,75 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 
+	public class Node {
+		public int x;
+		public int y;
+		public int moveLeft;
+		public bool walkable;
+		public bool treadable;
+		public bool sailable;
+		public bool flyable;
+		public int walkCost;
+		public int treadCost;
+		public int sailCost;
+		public int flyCost;
+		public Node (int inX, int inY, bool w, bool t, bool s, bool f, int wc, int tc, int sc, int fc){
+			x = inX;
+			y = inY;
+			moveLeft = 0;
+			walkable = w;
+			treadable = t;
+			sailable = s;
+			flyable = f;
+			walkCost = wc;
+			treadCost = tc;
+			sailCost = sc;
+			flyCost = fc;
+		}
+	}
+
+	public void showPossibleMovementsBFS(UnitScript unit){
+		Queue<Node> openSet = new Queue<Node> ();
+		HashSet<Node> closedSet = new HashSet<Node> ();
+		Node node1 = nodeArr [unit.position.x, unit.position.y + 1];
+		Node node2 = nodeArr [unit.position.x + 1, unit.position.y];
+		Node node3 = nodeArr [unit.position.x, unit.position.y - 1];
+		Node node4 = nodeArr [unit.position.x - 1, unit.position.y];
+		node1.moveLeft = unit.movement;
+		node2.moveLeft = unit.movement;
+		node3.moveLeft = unit.movement;
+		node4.moveLeft = unit.movement;
+		openSet.Enqueue (node1);
+		openSet.Enqueue (node2);
+		openSet.Enqueue (node3);
+		openSet.Enqueue (node4);
+		while (!(openSet.Count==0)){
+			Node node = openSet.Dequeue ();
+			Node northNode = nodeArr [node.x, node.y + 1];
+			Node eastNode = nodeArr [node.x + 1, node.y];
+			Node southNode = nodeArr [node.x, node.y - 1];
+			Node westNode = nodeArr [node.x - 1, node.y];
+			if (unit.movementType == "tread"){
+				if (northNode.treadable && !closedSet.Contains (northNode)){
+					northNode.moveLeft = node.moveLeft - northNode.treadCost;
+					openSet.Enqueue (northNode);
+				}
+				if (eastNode.treadable && !closedSet.Contains (eastNode)){
+					eastNode.moveLeft = node.moveLeft - eastNode.treadCost;
+					openSet.Enqueue (eastNode);
+				}
+				if (southNode.treadable && !closedSet.Contains (southNode)){
+					southNode.moveLeft = node.moveLeft - southNode.treadCost;
+					openSet.Enqueue (southNode);
+				}
+				if (westNode.treadable && !closedSet.Contains (westNode)){
+					westNode.moveLeft = node.moveLeft - westNode.treadCost;
+					openSet.Enqueue (westNode);
+				}
+			}
+		}
+	}
+
 	public static void removePossibleMovements(UnitScript unit){
 		for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
 			for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
@@ -309,10 +381,14 @@ public class BoardManager : MonoBehaviour {
 		}
 		DontDestroyOnLoad(gameObject);
 		unitPosArray = new List<List<GameObject>>();
+		nodeArr = new Node[tilemap.cellBounds.size.x - 1, tilemap.cellBounds.size.y - 1];
 		for (int i = 0; i < tilemap.cellBounds.size.x-1; i++){
 			unitPosArray.Add((List<GameObject>)new List<GameObject>());
 			for (int j = 0; j < tilemap.cellBounds.size.y-1; j++){
 				unitPosArray[i].Add(null);
+				SmartTile tile = accessTile (i, j);
+				nodeArr [i, j] = new Node (i, j, tile.walkable, tile.treadable, tile.sailable, tile.flyable, 
+					tile.walkCost, tile.treadCost, tile.sailCost, tile.flyCost);
 			}
 		}
 		selectedUnit = null;

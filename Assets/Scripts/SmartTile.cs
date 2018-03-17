@@ -15,6 +15,10 @@ public class SmartTile : Tile {
 	public bool treadable;
 	public bool sailable;
 	public bool flyable;
+	public int walkCost = 0;
+	public int treadCost = 0;
+	public int sailCost = 0;
+	public int flyCost = 0;
 
 	public override bool StartUp (Vector3Int position, ITilemap tilemap, GameObject go)
 	{
@@ -23,18 +27,28 @@ public class SmartTile : Tile {
 			treadable = true;
 			sailable = false;
 			flyable = true;
+
+			walkCost = 1;
+			treadCost = 1;
+			flyCost = 1;
 		}
 		else if (tileType == "Water"){
 			walkable = false;
 			treadable = false;
 			sailable = true;
 			flyable = true;
+
+			sailCost = 1;
+			flyCost = 1;
 		}
 		else if (tileType == "Mountain"){
 			walkable = true;
 			treadable = false;
 			sailable = false;
 			flyable = true;
+
+			walkCost = 2;
+			flyCost = 1;
 		}
 		return base.StartUp (position, tilemap, go);
 	}
