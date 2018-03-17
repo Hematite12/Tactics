@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ReconScript : UnitScript {
 
-	public int reconMovement = 5;
-	public string reconMovementType = "tread";
+	[SerializeField]
+	public int reconMovement;
+	[SerializeField]
+	public string reconMovementType;
 
 	public override int movement {
 		get {

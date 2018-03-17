@@ -148,8 +148,8 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public bool inBounds(int xPos, int yPos){
-		if (xPos >= 0 & yPos >= 0){
-			if (xPos<tilemap.cellBounds.size.x-1 & yPos<tilemap.cellBounds.size.y-1){
+		if (xPos >= 0 && yPos >= 0){
+			if (xPos<tilemap.cellBounds.size.x-1 && yPos<tilemap.cellBounds.size.y-1){
 				return true;
 			}
 		}
@@ -157,8 +157,8 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public bool inBounds(Vector2Int gridPos){
-		if (gridPos.x >= 0 & gridPos.y >= 0){
-			if (gridPos.x<tilemap.cellBounds.size.x-1 & gridPos.y<tilemap.cellBounds.size.y-1){
+		if (gridPos.x >= 0 && gridPos.y >= 0){
+			if (gridPos.x<tilemap.cellBounds.size.x-1 && gridPos.y<tilemap.cellBounds.size.y-1){
 				return true;
 			}
 		}
@@ -166,8 +166,8 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public bool inBounds(Vector3Int gridPos){
-		if (gridPos.x >= 0 & gridPos.y >= 0){
-			if (gridPos.x<tilemap.cellBounds.size.x-1 & gridPos.y<tilemap.cellBounds.size.y-1){
+		if (gridPos.x >= 0 && gridPos.y >= 0){
+			if (gridPos.x<tilemap.cellBounds.size.x-1 && gridPos.y<tilemap.cellBounds.size.y-1){
 				return true;
 			}
 		}
@@ -253,31 +253,6 @@ public class BoardManager : MonoBehaviour {
 		unitPosArray[destPos.x][destPos.y] = unit;
 	}
 
-	public static void showPossibleMovements(UnitScript unit){
-		if (unit.movementType == "tread"){
-			for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
-				for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-					if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
-						instance.changeColor(i, j, "blue");
-					}
-				}
-			}
-		}
-	}
-
-	public static void showPossibleMovements(GameObject unitObject){
-		UnitScript unit = instance.unitToScript (unitObject);
-		if (unit.movementType == "tread"){
-			for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
-				for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-					if (instance.inBounds(i, j) && instance.accessTile(i, j).treadable && instance.unitPosArray[i][j]==null){
-						instance.changeColor(i, j, "blue");
-					}
-				}
-			}
-		}
-	}
-
 	public class Node {
 		public int x;
 		public int y;
@@ -308,38 +283,53 @@ public class BoardManager : MonoBehaviour {
 	public void showPossibleMovementsBFS(UnitScript unit){
 		Queue<Node> openSet = new Queue<Node> ();
 		HashSet<Node> closedSet = new HashSet<Node> ();
-		Node node1 = nodeArr [unit.position.x, unit.position.y + 1];
-		Node node2 = nodeArr [unit.position.x + 1, unit.position.y];
-		Node node3 = nodeArr [unit.position.x, unit.position.y - 1];
-		Node node4 = nodeArr [unit.position.x - 1, unit.position.y];
-		node1.moveLeft = unit.movement;
-		node2.moveLeft = unit.movement;
-		node3.moveLeft = unit.movement;
-		node4.moveLeft = unit.movement;
-		openSet.Enqueue (node1);
-		openSet.Enqueue (node2);
-		openSet.Enqueue (node3);
-		openSet.Enqueue (node4);
+		Node origNode = nodeArr [unit.position.x, unit.position.y];
+		origNode.moveLeft = unit.movement;
+		openSet.Enqueue (origNode);
 		while (!(openSet.Count==0)){
+			
 			Node node = openSet.Dequeue ();
-			Node northNode = nodeArr [node.x, node.y + 1];
-			Node eastNode = nodeArr [node.x + 1, node.y];
-			Node southNode = nodeArr [node.x, node.y - 1];
-			Node westNode = nodeArr [node.x - 1, node.y];
+			closedSet.Add (node);
+			if (!(node == origNode)){
+				changeColor (node.x, node.y, "blue");
+			}
+			if (node.moveLeft <= 0){
+				continue;
+			}
+			Node northNode = null;
+			Node eastNode = null;
+			Node southNode = null;
+			Node westNode = null;
+			if (inBounds (node.x, node.y+1)){
+				northNode = nodeArr [node.x, node.y + 1];
+			}
+			if (inBounds (node.x+1, node.y)){
+				eastNode = nodeArr [node.x + 1, node.y];
+			}
+			if (inBounds (node.x, node.y-1)){
+				southNode = nodeArr [node.x, node.y - 1];
+			}
+			if (inBounds (node.x-1, node.y)){
+				westNode = nodeArr [node.x - 1, node.y];
+			}
 			if (unit.movementType == "tread"){
-				if (northNode.treadable && !closedSet.Contains (northNode)){
+				if (northNode!=null && northNode.treadable && unitPosArray[northNode.x][northNode.y]==null && !openSet.Contains(northNode) &&
+					((!closedSet.Contains (northNode)) | northNode.moveLeft < node.moveLeft - northNode.treadCost)){
 					northNode.moveLeft = node.moveLeft - northNode.treadCost;
 					openSet.Enqueue (northNode);
 				}
-				if (eastNode.treadable && !closedSet.Contains (eastNode)){
+				if (eastNode!=null && eastNode.treadable && unitPosArray[eastNode.x][eastNode.y]==null && !openSet.Contains(eastNode) &&
+					((!closedSet.Contains (eastNode)) | eastNode.moveLeft < node.moveLeft - eastNode.treadCost)){
 					eastNode.moveLeft = node.moveLeft - eastNode.treadCost;
 					openSet.Enqueue (eastNode);
 				}
-				if (southNode.treadable && !closedSet.Contains (southNode)){
+				if (southNode!=null && southNode.treadable && unitPosArray[southNode.x][southNode.y]==null && !openSet.Contains(southNode) &&
+					((!closedSet.Contains (southNode)) | southNode.moveLeft < node.moveLeft - southNode.treadCost)){
 					southNode.moveLeft = node.moveLeft - southNode.treadCost;
 					openSet.Enqueue (southNode);
 				}
-				if (westNode.treadable && !closedSet.Contains (westNode)){
+				if (westNode!=null && westNode.treadable && unitPosArray[westNode.x][westNode.y]==null && !openSet.Contains(westNode) &&
+					((!closedSet.Contains (westNode)) | westNode.moveLeft < node.moveLeft - westNode.treadCost)){
 					westNode.moveLeft = node.moveLeft - westNode.treadCost;
 					openSet.Enqueue (westNode);
 				}
@@ -405,11 +395,13 @@ public class BoardManager : MonoBehaviour {
 			Vector3Int gridPos = worldToGrid (worldPos);
 			if (selectedUnit != null){
 				if (inBounds (gridPos)){
+					print("tomato");
 					if (unitPosArray[gridPos.x][gridPos.y] == selectedUnit){
 						removePossibleMovements (selectedUnit);
 						selectedUnit = null; 
 					}
 					if (accessTile (gridPos).moveHighlighted){
+						print ("onion");
 						removePossibleMovements (selectedUnit);
 						moveUnit (selectedUnit, gridPos);
 						selectedUnit = null;
@@ -419,7 +411,7 @@ public class BoardManager : MonoBehaviour {
 			else if (selectedUnit == null){
 				selectedUnit = unitPosArray [gridPos.x] [gridPos.y];
 				if (selectedUnit != null){
-					showPossibleMovements (selectedUnit);
+					showPossibleMovementsBFS (unitToScript (selectedUnit));
 				}
 			}
 		}
