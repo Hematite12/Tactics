@@ -216,7 +216,7 @@ Prefab:
         type: 2}
       propertyPath: recon
       value: 
-      objectReference: {fileID: 1682757873855958, guid: e9de78e558e58cf4c8ee486adc4a01f0,
+      objectReference: {fileID: 1682757873855958, guid: 4c37e382bca95bc4aa986cca4bf3e840,
         type: 2}
     - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
         type: 2}
@@ -253,6 +253,24 @@ Prefab:
       propertyPath: mountainTileBlue
       value: 
       objectReference: {fileID: 11400000, guid: e16224c3abd1f494d908d4abd0dbdd46,
+        type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: redInfantry
+      value: 
+      objectReference: {fileID: 1029166795720330, guid: 924ce2dbd55ee2b46b41f43ad7ed2385,
+        type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: redRecon
+      value: 
+      objectReference: {fileID: 1682757873855958, guid: 4c37e382bca95bc4aa986cca4bf3e840,
+        type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: redCarrier
+      value: 
+      objectReference: {fileID: 1561165997011686, guid: b5cf62312d47b9b4e8d63f033e38ac5e,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6cd10d5ced0c5340bca5b147a88d45d, type: 2}

@@ -9,32 +9,32 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1682757873855958}
+  m_RootGameObject: {fileID: 1561165997011686}
   m_IsPrefabParent: 1
---- !u!1 &1682757873855958
+--- !u!1 &1561165997011686
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4264235351129632}
-  - component: {fileID: 212090483848910442}
-  - component: {fileID: 61095423033985826}
-  - component: {fileID: 114146809691996466}
+  - component: {fileID: 4133717487056098}
+  - component: {fileID: 212659206538705566}
+  - component: {fileID: 61527073558741498}
+  - component: {fileID: 114998772014934780}
   m_Layer: 8
-  m_Name: Recon
+  m_Name: RedCarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4264235351129632
+--- !u!4 &4133717487056098
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1682757873855958}
+  m_GameObject: {fileID: 1561165997011686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 999.51996, y: 999.83997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -42,12 +42,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61095423033985826
+--- !u!61 &61527073558741498
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1682757873855958}
+  m_GameObject: {fileID: 1561165997011686}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -67,27 +67,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &114146809691996466
+--- !u!114 &114998772014934780
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1682757873855958}
+  m_GameObject: {fileID: 1561165997011686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c0fdbeca0eb0b438949a2f669e4d19, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fc25c66b4d11304c9ede40fd874bb03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  selected: 0
-  reconMovement: 5
-  reconMovementType: tread
---- !u!212 &212090483848910442
+  carrierMovement: 4
+  carrierMovementType: sail
+--- !u!212 &212659206538705566
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1682757873855958}
+  m_GameObject: {fileID: 1561165997011686}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -116,7 +115,7 @@ SpriteRenderer:
   m_SortingLayerID: 86936577
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300008, guid: c81aff2f01d0d26498bd4e68f426c064, type: 3}
+  m_Sprite: {fileID: 21300050, guid: c81aff2f01d0d26498bd4e68f426c064, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

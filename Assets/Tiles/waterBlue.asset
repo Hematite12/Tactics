@@ -34,8 +34,12 @@ MonoBehaviour:
   m_Flags: 1
   m_ColliderType: 1
   tileType: Water
+  moveHighlighted: 1
   walkable: 0
   treadable: 0
   sailable: 1
   flyable: 1
-  moveHighlighted: 0
+  walkCost: 0
+  treadCost: 0
+  sailCost: 1
+  flyCost: 1

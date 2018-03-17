@@ -13,7 +13,13 @@ public class BoardManager : MonoBehaviour {
 	[SerializeField]
 	public Tilemap tilemap;
 	[SerializeField]
-	public GameObject recon;
+	public GameObject redRecon;
+	[SerializeField]
+	public GameObject redInfantry;
+	[SerializeField]
+	public GameObject redCarrier;
+	[SerializeField]
+	public GameObject redBomber;
 	[SerializeField]
 	public SmartTile waterTile;
 	[SerializeField]
@@ -240,6 +246,41 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 
+	public void checkNode(UnitScript unit, Queue<Node> openSet, HashSet<Node> closedSet, Node node, string direction){
+		Node newNode = null;
+		if (direction == "north" && inBounds (node.x, node.y+1)){
+			newNode = nodeArr [node.x, node.y + 1];
+		}
+		else if (direction == "east" && inBounds (node.x+1, node.y)){
+			newNode = nodeArr [node.x + 1, node.y];
+		}
+		else if (direction == "south" && inBounds (node.x, node.y-1)){
+			newNode = nodeArr [node.x, node.y - 1];
+		}
+		else if (direction == "west" && inBounds (node.x-1, node.y)){
+			newNode = nodeArr [node.x - 1, node.y];
+		}
+		if (newNode!=null && unitPosArray[newNode.x][newNode.y]==null && !openSet.Contains(newNode) &&
+			((!closedSet.Contains (newNode)) | newNode.moveLeft < node.moveLeft - newNode.treadCost)){
+			if (unit.movementType == "walk" && newNode.walkable){
+				newNode.moveLeft = node.moveLeft - newNode.walkCost;
+				openSet.Enqueue (newNode);
+			}
+			else if (unit.movementType == "tread" && newNode.treadable){
+				newNode.moveLeft = node.moveLeft - newNode.treadCost;
+				openSet.Enqueue (newNode);
+			}
+			else if (unit.movementType == "sail" && newNode.sailable){
+				newNode.moveLeft = node.moveLeft - newNode.sailCost;
+				openSet.Enqueue (newNode);
+			}
+			else if (unit.movementType == "fly" && newNode.flyable){
+				newNode.moveLeft = node.moveLeft - newNode.flyCost;
+				openSet.Enqueue (newNode);
+			}
+		}
+	}
+
 	public void showPossibleMovements(UnitScript unit){
 		Queue<Node> openSet = new Queue<Node> ();
 		HashSet<Node> closedSet = new HashSet<Node> ();
@@ -255,98 +296,10 @@ public class BoardManager : MonoBehaviour {
 			if (node.moveLeft <= 0){
 				continue;
 			}
-			Node northNode = null;
-			Node eastNode = null;
-			Node southNode = null;
-			Node westNode = null;
-			if (inBounds (node.x, node.y+1)){
-				northNode = nodeArr [node.x, node.y + 1];
-			}
-			if (inBounds (node.x+1, node.y)){
-				eastNode = nodeArr [node.x + 1, node.y];
-			}
-			if (inBounds (node.x, node.y-1)){
-				southNode = nodeArr [node.x, node.y - 1];
-			}
-			if (inBounds (node.x-1, node.y)){
-				westNode = nodeArr [node.x - 1, node.y];
-			}
-			if (northNode!=null && unitPosArray[northNode.x][northNode.y]==null && !openSet.Contains(northNode) &&
-				((!closedSet.Contains (northNode)) | northNode.moveLeft < node.moveLeft - northNode.treadCost)){
-				if (unit.movementType == "walk" && northNode.walkable){
-					northNode.moveLeft = node.moveLeft - northNode.walkCost;
-					openSet.Enqueue (northNode);
-				}
-				else if (unit.movementType == "tread" && northNode.treadable){
-					northNode.moveLeft = node.moveLeft - northNode.treadCost;
-					openSet.Enqueue (northNode);
-				}
-				else if (unit.movementType == "sail" && northNode.sailable){
-					northNode.moveLeft = node.moveLeft - northNode.sailCost;
-					openSet.Enqueue (northNode);
-				}
-				else if (unit.movementType == "fly" && northNode.flyable){
-					northNode.moveLeft = node.moveLeft - northNode.flyCost;
-					openSet.Enqueue (northNode);
-				}
-			}
-			if (eastNode!=null && unitPosArray[eastNode.x][eastNode.y]==null && !openSet.Contains(eastNode) &&
-				((!closedSet.Contains (eastNode)) | eastNode.moveLeft < node.moveLeft - eastNode.treadCost)){
-				if (unit.movementType == "walk" && eastNode.walkable){
-					eastNode.moveLeft = node.moveLeft - eastNode.walkCost;
-					openSet.Enqueue (eastNode);
-				}
-				else if (unit.movementType == "tread" && eastNode.treadable){
-					eastNode.moveLeft = node.moveLeft - eastNode.treadCost;
-					openSet.Enqueue (eastNode);
-				}
-				else if (unit.movementType == "sail" && eastNode.sailable){
-					eastNode.moveLeft = node.moveLeft - eastNode.sailCost;
-					openSet.Enqueue (eastNode);
-				}
-				else if (unit.movementType == "fly" && eastNode.flyable){
-					eastNode.moveLeft = node.moveLeft - eastNode.flyCost;
-					openSet.Enqueue (eastNode);
-				}
-			}
-			if (southNode!=null && unitPosArray[southNode.x][southNode.y]==null && !openSet.Contains(southNode) &&
-				((!closedSet.Contains (southNode)) | southNode.moveLeft < node.moveLeft - southNode.treadCost)){
-				if (unit.movementType == "walk" && southNode.walkable){
-					southNode.moveLeft = node.moveLeft - southNode.walkCost;
-					openSet.Enqueue (southNode);
-				}
-				else if (unit.movementType == "tread" && southNode.treadable){
-					southNode.moveLeft = node.moveLeft - southNode.treadCost;
-					openSet.Enqueue (southNode);
-				}
-				else if (unit.movementType == "sail" && southNode.sailable){
-					southNode.moveLeft = node.moveLeft - southNode.sailCost;
-					openSet.Enqueue (southNode);
-				}
-				else if (unit.movementType == "fly" && southNode.flyable){
-					southNode.moveLeft = node.moveLeft - southNode.flyCost;
-					openSet.Enqueue (southNode);
-				}
-			}
-			if (westNode!=null && unitPosArray[westNode.x][westNode.y]==null && !openSet.Contains(westNode) &&
-				((!closedSet.Contains (westNode)) | westNode.moveLeft < node.moveLeft - westNode.treadCost)){
-				if (unit.movementType == "walk" && westNode.walkable){
-					westNode.moveLeft = node.moveLeft - westNode.walkCost;
-					openSet.Enqueue (westNode);
-				}
-				else if (unit.movementType == "tread" && westNode.treadable){
-					westNode.moveLeft = node.moveLeft - westNode.treadCost;
-					openSet.Enqueue (westNode);
-				}
-				else if (unit.movementType == "sail" && westNode.sailable){
-					westNode.moveLeft = node.moveLeft - westNode.sailCost;
-					openSet.Enqueue (westNode);
-				}
-				else if (unit.movementType == "fly" && westNode.flyable){
-					westNode.moveLeft = node.moveLeft - westNode.flyCost;
-					openSet.Enqueue (westNode);
-				}
-			}
+			checkNode (unit, openSet, closedSet, node, "north");
+			checkNode (unit, openSet, closedSet, node, "east");
+			checkNode (unit, openSet, closedSet, node, "south");
+			checkNode (unit, openSet, closedSet, node, "west");
 		}
 	}
 
@@ -354,20 +307,18 @@ public class BoardManager : MonoBehaviour {
 		showPossibleMovements (unitToScript (unitObject));
 	}
 
-	public static void removePossibleMovements(UnitScript unit){
+	public void removePossibleMovements(UnitScript unit){
 		for (int i = unit.position.x - unit.movement; i < unit.position.x + unit.movement + 1; i++){
 			for (int j = unit.position.y - unit.movement; j < unit.position.y + unit.movement + 1; j++){
-				if (instance.inBounds (i, j)){
-					if (instance.accessTile(i, j).treadable){
-						instance.resetColor(i, j, "blue");
-					}
+				if (inBounds (i, j)){
+					resetColor (i, j, "blue");
 				}
 			}
 		}
 	}
 
-	public static void removePossibleMovements(GameObject unitObject){
-		removePossibleMovements (instance.unitToScript (unitObject));
+	public void removePossibleMovements(GameObject unitObject){
+		removePossibleMovements (unitToScript (unitObject));
 	}
 
 	void Start(){
@@ -390,13 +341,10 @@ public class BoardManager : MonoBehaviour {
 			}
 		}
 		selectedUnit = null;
-		GameObject recon1 = spawnUnit(recon, 0, 0);
-		spawnUnit(recon, 1, 5);
-		spawnUnit (recon, 2, 3);
-		spawnUnit (recon, 6, 2);
-		moveUnit(recon1, 7, 3);
-		print (tilemap.cellBounds.size.x);
-		print (tilemap.cellBounds.size.y); 
+		spawnUnit(redRecon, 0, 0);
+		spawnUnit (redInfantry, 3, 3);
+		spawnUnit (redCarrier, 10, 6);
+		spawnUnit (redBomber, 5, 4);
 	}
 
 	void Update(){

@@ -34,8 +34,12 @@ MonoBehaviour:
   m_Flags: 1
   m_ColliderType: 1
   tileType: Grass
+  moveHighlighted: 1
   walkable: 1
   treadable: 1
   sailable: 0
   flyable: 1
-  moveHighlighted: 0
+  walkCost: 1
+  treadCost: 1
+  sailCost: 0
+  flyCost: 1
