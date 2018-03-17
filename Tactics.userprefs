@@ -1,11 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BoardManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SmartTile.cs">
     <Files>
-      <File FileName="Assets\Scripts\BoardManager.cs" Line="1" Column="9316" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SmartTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UnitScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="16" Column="5" />
+      <File FileName="Assets\Scripts\BoardManager.cs" Line="347" Column="31" />
+      <File FileName="Assets\Scripts\SmartTile.cs" Line="21" Column="24" />
+      <File FileName="Assets\Scripts\UnitScript.cs" Line="11" Column="29" />
+      <File FileName="Assets\Scripts\ReconScript.cs" Line="5" Column="1" />
+      <File FileName="Assets\Scripts\InfantryScript.cs" Line="3" Column="19" />
+      <File FileName="Assets\Scripts\CarrierScript.cs" Line="3" Column="19" />
+      <File FileName="Assets\Scripts\BomberScript.cs" Line="24" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

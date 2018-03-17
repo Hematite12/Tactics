@@ -52,9 +52,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoardManager.cs" />
-     <Compile Include="Assets\Scripts\BoardManager2.cs" />
+     <Compile Include="Assets\Scripts\BomberScript.cs" />
+     <Compile Include="Assets\Scripts\CarrierScript.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GridInformation.cs" />
+     <Compile Include="Assets\Scripts\InfantryScript.cs" />
      <Compile Include="Assets\Scripts\ReconScript.cs" />
      <Compile Include="Assets\Scripts\SmartTile.cs" />
      <Compile Include="Assets\Scripts\TintBrush.cs" />

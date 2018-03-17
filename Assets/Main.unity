@@ -272,6 +272,12 @@ Prefab:
       value: 
       objectReference: {fileID: 1561165997011686, guid: b5cf62312d47b9b4e8d63f033e38ac5e,
         type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: redBomber
+      value: 
+      objectReference: {fileID: 1678641521010026, guid: f730e0fa17cde7f4699c73e2c4b33a70,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6cd10d5ced0c5340bca5b147a88d45d, type: 2}
   m_IsPrefabParent: 0
