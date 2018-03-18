@@ -21,6 +21,8 @@ public class BoardManager : MonoBehaviour {
 	[SerializeField]
 	public GameObject redBomber;
 	[SerializeField]
+	public GameObject blueapc;
+	[SerializeField]
 	public SmartTile waterTile;
 	[SerializeField]
 	public SmartTile waterTileBlue;
@@ -260,23 +262,50 @@ public class BoardManager : MonoBehaviour {
 		else if (direction == "west" && inBounds (node.x-1, node.y)){
 			newNode = nodeArr [node.x - 1, node.y];
 		}
-		if (newNode!=null && unitPosArray[newNode.x][newNode.y]==null && !openSet.Contains(newNode) &&
-			((!closedSet.Contains (newNode)) | newNode.moveLeft < node.moveLeft - newNode.treadCost)){
-			if (unit.movementType == "walk" && newNode.walkable){
-				newNode.moveLeft = node.moveLeft - newNode.walkCost;
-				openSet.Enqueue (newNode);
+		if (newNode!=null && unitPosArray[newNode.x][newNode.y]==null){
+			if (!openSet.Contains(newNode) && !closedSet.Contains (newNode)){
+				if (unit.movementType == "walk" && newNode.walkable){
+					newNode.moveLeft = node.moveLeft - newNode.walkCost;
+					openSet.Enqueue (newNode);
+				}
+				else if (unit.movementType == "tread" && newNode.treadable){
+					newNode.moveLeft = node.moveLeft - newNode.treadCost;
+					openSet.Enqueue (newNode);
+				}
+				else if (unit.movementType == "sail" && newNode.sailable){
+					newNode.moveLeft = node.moveLeft - newNode.sailCost;
+					openSet.Enqueue (newNode);
+				}
+				else if (unit.movementType == "fly" && newNode.flyable){
+					newNode.moveLeft = node.moveLeft - newNode.flyCost;
+					openSet.Enqueue (newNode);
+				}
 			}
-			else if (unit.movementType == "tread" && newNode.treadable){
-				newNode.moveLeft = node.moveLeft - newNode.treadCost;
-				openSet.Enqueue (newNode);
-			}
-			else if (unit.movementType == "sail" && newNode.sailable){
-				newNode.moveLeft = node.moveLeft - newNode.sailCost;
-				openSet.Enqueue (newNode);
-			}
-			else if (unit.movementType == "fly" && newNode.flyable){
-				newNode.moveLeft = node.moveLeft - newNode.flyCost;
-				openSet.Enqueue (newNode);
+			else {
+				if (unit.movementType == "walk" && newNode.walkable && newNode.moveLeft < node.moveLeft - newNode.walkCost){
+					newNode.moveLeft = node.moveLeft - newNode.walkCost;
+					if (closedSet.Contains (newNode)){
+						openSet.Enqueue (newNode);
+					}
+				}
+				else if (unit.movementType == "tread" && newNode.treadable && newNode.moveLeft < node.moveLeft - newNode.treadCost){
+					newNode.moveLeft = node.moveLeft - newNode.treadCost;
+					if (closedSet.Contains (newNode)){
+						openSet.Enqueue (newNode);
+					}
+				}
+				else if (unit.movementType == "sail" && newNode.sailable && newNode.moveLeft < node.moveLeft - newNode.sailCost){
+					newNode.moveLeft = node.moveLeft - newNode.sailCost;
+					if (closedSet.Contains (newNode)){
+						openSet.Enqueue (newNode);
+					}
+				}
+				else if (unit.movementType == "fly" && newNode.flyable && newNode.moveLeft < node.moveLeft - newNode.flyCost){
+					newNode.moveLeft = node.moveLeft - newNode.flyCost;
+					if (closedSet.Contains (newNode)){
+						openSet.Enqueue (newNode);
+					}
+				}
 			}
 		}
 	}
@@ -345,6 +374,7 @@ public class BoardManager : MonoBehaviour {
 		spawnUnit (redInfantry, 3, 3);
 		spawnUnit (redCarrier, 10, 6);
 		spawnUnit (redBomber, 5, 4);
+		spawnUnit (blueapc, 4, 2);
 	}
 
 	void Update(){
