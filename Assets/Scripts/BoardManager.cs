@@ -8,31 +8,23 @@ using System.Collections;
 
 public class BoardManager : MonoBehaviour {
 	public static BoardManager instance = null;
-	[SerializeField]
+	
 	public Grid grid;
-	[SerializeField]
+	
 	public Tilemap tilemap;
-	[SerializeField]
+	
 	public GameObject redRecon;
-	[SerializeField]
 	public GameObject redInfantry;
-	[SerializeField]
 	public GameObject redCarrier;
-	[SerializeField]
 	public GameObject redBomber;
-	[SerializeField]
 	public GameObject blueapc;
-	[SerializeField]
+	public GameObject rotary;
+
 	public SmartTile waterTile;
-	[SerializeField]
 	public SmartTile waterTileBlue;
-	[SerializeField]
 	public SmartTile grassTile;
-	[SerializeField]
 	public SmartTile grassTileBlue;
-	[SerializeField]
 	public SmartTile mountainTile;
-	[SerializeField]
 	public SmartTile mountainTileBlue;
 
 	public GameObject selectedUnit;
@@ -88,18 +80,18 @@ public class BoardManager : MonoBehaviour {
 		return actualToGrid (gridPos.x, gridPos.y);
 	}
 
-	public Vector3 gridToWorld(int xPos, int yPos){
-		Vector3Int actualPos = gridToActual(xPos, yPos);
-		float worldX = (float)((0.5 + actualPos.x)*grid.cellSize.x);
-		float worldY = (float)((0.5 + actualPos.y)*grid.cellSize.y);
+	public static Vector3 gridToWorld(int xPos, int yPos){
+		Vector3Int actualPos = instance.gridToActual(xPos, yPos);
+		float worldX = (float)((0.5 + actualPos.x)*instance.grid.cellSize.x);
+		float worldY = (float)((0.5 + actualPos.y)*instance.grid.cellSize.y);
 		return new Vector3(worldX, worldY, 0f);
 	}
 
-	public Vector3 gridToWorld(Vector2Int gridPos){
+	public static Vector3 gridToWorld(Vector2Int gridPos){
 		return gridToWorld (gridPos.x, gridPos.y);
 	}
 
-	public Vector3 gridToWorld(Vector3Int gridPos){
+	public static Vector3 gridToWorld(Vector3Int gridPos){
 		return gridToWorld (gridPos.x, gridPos.y);
 	}
 
@@ -206,10 +198,10 @@ public class BoardManager : MonoBehaviour {
 	}
 
 	public void moveUnit(GameObject unit, int destX, int destY){
-		unit.transform.position = gridToWorld (destX, destY);
-		Vector2Int unitPos = unitToScript(unit).position;
+		UnitScript script = unitToScript (unit);
+		Vector2Int unitPos = script.position;
 		unitPosArray[unitPos.x][unitPos.y] = null;
-		(unit.GetComponent(typeof(UnitScript)) as UnitScript).position = new Vector2Int(destX, destY);
+		script.move (destX, destY);
 		unitPosArray[destX][destY] = unit;
 	}
 
@@ -375,6 +367,7 @@ public class BoardManager : MonoBehaviour {
 		spawnUnit (redCarrier, 10, 6);
 		spawnUnit (redBomber, 5, 4);
 		spawnUnit (blueapc, 4, 2);
+		spawnUnit (rotary, 2, 2);
 	}
 
 	void Update(){

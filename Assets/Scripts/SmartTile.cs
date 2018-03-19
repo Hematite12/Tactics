@@ -6,9 +6,7 @@ using System;
 using UnityEditor;
 
 public class SmartTile : Tile {
-	[SerializeField]
 	public string tileType;
-	[SerializeField]
 	public bool moveHighlighted;
 
 	public bool walkable;

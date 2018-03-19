@@ -9,33 +9,33 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1435169776274008}
+  m_RootGameObject: {fileID: 1609759884238802}
   m_IsPrefabParent: 1
---- !u!1 &1435169776274008
+--- !u!1 &1609759884238802
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4259198869286290}
-  - component: {fileID: 212023573977428712}
-  - component: {fileID: 61794190899095494}
-  - component: {fileID: 114643401168349598}
-  - component: {fileID: 95904385606343806}
+  - component: {fileID: 4321077454721528}
+  - component: {fileID: 212091894534285222}
+  - component: {fileID: 61048279351684648}
+  - component: {fileID: 114670041173716026}
+  - component: {fileID: 95229732765999538}
   m_Layer: 8
-  m_Name: BlueAPC
+  m_Name: RotaryTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4259198869286290
+--- !u!4 &4321077454721528
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1435169776274008}
+  m_GameObject: {fileID: 1609759884238802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 999.51996, y: 999.83997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -43,12 +43,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61794190899095494
+--- !u!61 &61048279351684648
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1435169776274008}
+  m_GameObject: {fileID: 1609759884238802}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -68,16 +68,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15, y: 0.15}
   m_EdgeRadius: 0
---- !u!95 &95904385606343806
+--- !u!95 &95229732765999538
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1435169776274008}
+  m_GameObject: {fileID: 1609759884238802}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8f56e60407329f0438b00e4fcbc70b01, type: 2}
+  m_Controller: {fileID: 9100000, guid: df892f8f9a254b54b9a28320e7762ad8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -85,26 +85,40 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114643401168349598
+--- !u!114 &114670041173716026
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1435169776274008}
+  m_GameObject: {fileID: 1609759884238802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08bb45bfd5f219e45b4be780d167cb3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e5fdfc67e37a5044a905cb334085a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  apcMovement: 6
-  apcMovementType: tread
---- !u!212 &212023573977428712
+  health: 0
+  healthValues:
+  - {fileID: 1547035907423902, guid: d72577216f5bbd7459c62cd41909e949, type: 2}
+  - {fileID: 1742664705140458, guid: ffa5e50c5a0e5ec449ce60844f3039d8, type: 2}
+  - {fileID: 1408843590876050, guid: 05da5b58dff0ac4449bb6919656ea034, type: 2}
+  - {fileID: 1978599145404014, guid: ac81ad7337b4bc448965cdc3b1033eb9, type: 2}
+  - {fileID: 1282334368505354, guid: 1c5a209071eabbe47bff1751aace75a9, type: 2}
+  - {fileID: 1151873455346334, guid: 82e1ab5580eff6e42b2052f401c89201, type: 2}
+  - {fileID: 1296937426106254, guid: 6ab3488f962171e4093d6fb6746dff6d, type: 2}
+  - {fileID: 1425999708880844, guid: 6c7996829f7738440a0c4367227ac726, type: 2}
+  - {fileID: 1672781726616654, guid: 7feb05411b9fa214298d0938fb724c24, type: 2}
+  - {fileID: 1394500104076416, guid: da750d910ab59dd4f845650b887493b0, type: 2}
+  healthDisplay: {fileID: 1547035907423902, guid: d72577216f5bbd7459c62cd41909e949,
+    type: 2}
+  rotaryMovement: 0
+  rotaryMovementType: tread
+--- !u!212 &212091894534285222
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1435169776274008}
+  m_GameObject: {fileID: 1609759884238802}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -133,7 +147,7 @@ SpriteRenderer:
   m_SortingLayerID: 86936577
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: af2d11d63def2e3488af9ed61b5bdde7, type: 3}
+  m_Sprite: {fileID: 21300006, guid: e879cdc8f19f18647b6ba98ef5bcda95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
