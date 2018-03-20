@@ -8,6 +8,7 @@ using UnityEditor;
 public class SmartTile : Tile {
 	public string tileType;
 	public bool moveHighlighted;
+	public bool attackHighlighted;
 
 	public bool walkable;
 	public bool treadable;

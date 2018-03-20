@@ -11,6 +11,13 @@ public abstract class UnitScript : MonoBehaviour {
 	public int health;
 	public GameObject[] healthValues;
 	public GameObject healthDisplay;
+	public Sprite normalSprite;
+	public Sprite redSprite;
+	public bool hasAnimator;
+
+	public abstract int attackRange {
+		get;
+	}
 
 	public abstract int movement {
 		get;
@@ -18,6 +25,14 @@ public abstract class UnitScript : MonoBehaviour {
 
 	public abstract string movementType {
 		get;
+	}
+
+	public SpriteRenderer getSpriteRenderer(){
+		return (gameObject.GetComponent (typeof(SpriteRenderer)) as SpriteRenderer);
+	}
+
+	public Animator getAnimator(){
+		return (gameObject.GetComponent (typeof(Animator)) as Animator);
 	}
 
 	public void setHealth(int h){
@@ -35,7 +50,37 @@ public abstract class UnitScript : MonoBehaviour {
 	}
 
 	public void updateHealthDisplay(){
+		Destroy (healthDisplay);
 		healthDisplay = Instantiate (healthValues [(int)(health - 1)], BoardManager.gridToWorld (position), Quaternion.identity).gameObject as GameObject;
+	}
+
+	public void changeRed(){
+		getSpriteRenderer ().sprite = redSprite;
+		if (hasAnimator){
+			getAnimator ().SetBool (getAnimator ().parameters[0].name, true);
+		}
+	}
+
+	public void changeNormal(){
+		getSpriteRenderer ().sprite = normalSprite;
+		if (hasAnimator){
+			getAnimator ().SetBool ("isRed", false);
+		}
+	}
+
+	public bool damage(int d){
+		health -= d;
+		if (health <= 0){
+			return true;
+		}
+		else {
+			updateHealthDisplay ();
+			return false;
+		}
+	}
+
+	void OnDestroy(){
+		Destroy (healthDisplay);
 	}
 
 	void Start(){

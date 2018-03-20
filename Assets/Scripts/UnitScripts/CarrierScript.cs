@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CarrierScript : UnitScript {
-
-	[SerializeField]
 	public int carrierMovement;
-	[SerializeField]
 	public string carrierMovementType;
+	public int carrierAttackRange;
 
 	public override int movement {
 		get {
@@ -18,6 +16,12 @@ public class CarrierScript : UnitScript {
 	public override string movementType {
 		get {
 			return carrierMovementType;
+		}
+	}
+
+	public override int attackRange {
+		get {
+			return carrierAttackRange;
 		}
 	}
 }

@@ -22,12 +22,17 @@ public class BoardManager : MonoBehaviour {
 
 	public SmartTile waterTile;
 	public SmartTile waterTileBlue;
+	public SmartTile waterTileRed;
 	public SmartTile grassTile;
 	public SmartTile grassTileBlue;
+	public SmartTile grassTileRed;
 	public SmartTile mountainTile;
 	public SmartTile mountainTileBlue;
+	public SmartTile mountainTileRed;
 
 	public GameObject selectedUnit;
+	public bool unitMoving;
+	public bool unitAttacking;
 	public List<List<GameObject>> unitPosArray;
 	public Node[,] nodeArr;
 
@@ -162,6 +167,20 @@ public class BoardManager : MonoBehaviour {
 				newTile = mountainTileBlue;
 			}
 		}
+		else if (newColor == "red"){
+			if (unitPosArray[xPos][yPos] != null){
+				unitToScript (unitPosArray [xPos] [yPos]).changeRed ();
+			}
+			if (oldTile == waterTile){
+				newTile = waterTileRed;
+			}
+			else if (oldTile == grassTile){
+				newTile = grassTileRed;
+			}
+			else if (oldTile == mountainTile){
+				newTile = mountainTileRed;
+			}
+		}
 		tilemap.SetTile(gridToActual (xPos, yPos), newTile);
 	}
 
@@ -176,6 +195,20 @@ public class BoardManager : MonoBehaviour {
 				newTile = grassTile;
 			}
 			else if (oldTile == mountainTileBlue){
+				newTile = mountainTile;
+			}
+		}
+		else if (oldColor == "red"){
+			if (unitPosArray[xPos][yPos] != null){
+				unitToScript (unitPosArray [xPos] [yPos]).changeNormal ();
+			}
+			if (oldTile == waterTileRed){
+				newTile = waterTile;
+			}
+			else if (oldTile == grassTileRed){
+				newTile = grassTile;
+			}
+			else if (oldTile == mountainTileRed){
 				newTile = mountainTile;
 			}
 		}
@@ -342,6 +375,44 @@ public class BoardManager : MonoBehaviour {
 		removePossibleMovements (unitToScript (unitObject));
 	}
 
+	public void showPossibleAttacks(UnitScript unit){
+		if (inBounds (unit.position.x, unit.position.y+1)){
+			changeColor (unit.position.x, unit.position.y+1, "red");
+		}
+		if (inBounds (unit.position.x+1, unit.position.y)){
+			changeColor (unit.position.x+1, unit.position.y, "red");
+		}
+		if (inBounds (unit.position.x, unit.position.y-1)){
+			changeColor (unit.position.x, unit.position.y-1, "red");
+		}
+		if (inBounds (unit.position.x-1, unit.position.y)){
+			changeColor (unit.position.x-1, unit.position.y, "red");
+		}
+	}
+
+	public void showPossibleAttacks(GameObject unitObject){
+		showPossibleAttacks (unitToScript (unitObject));
+	}
+
+	public void removePossibleAttacks(UnitScript unit){
+		if (inBounds (unit.position.x, unit.position.y+1)){
+			resetColor (unit.position.x, unit.position.y+1, "red");
+		}
+		if (inBounds (unit.position.x+1, unit.position.y)){
+			resetColor (unit.position.x+1, unit.position.y, "red");
+		}
+		if (inBounds (unit.position.x, unit.position.y-1)){
+			resetColor (unit.position.x, unit.position.y-1, "red");
+		}
+		if (inBounds (unit.position.x-1, unit.position.y)){
+			resetColor (unit.position.x-1, unit.position.y, "red");
+		}
+	}
+
+	public void removePossibleAttacks(GameObject unit){
+		removePossibleAttacks (unitToScript (unit));
+	}
+
 	void Start(){
 		if (instance == null){
 			instance = this;
@@ -350,6 +421,8 @@ public class BoardManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(gameObject);
+		unitMoving = false;
+		unitAttacking = false;
 		unitPosArray = new List<List<GameObject>>();
 		nodeArr = new Node[tilemap.cellBounds.size.x, tilemap.cellBounds.size.y];
 		for (int i = 0; i < tilemap.cellBounds.size.x; i++){
@@ -378,12 +451,24 @@ public class BoardManager : MonoBehaviour {
 				if (inBounds (gridPos)){
 					if (unitPosArray[gridPos.x][gridPos.y] == selectedUnit){
 						removePossibleMovements (selectedUnit);
-						selectedUnit = null; 
+						removePossibleAttacks (selectedUnit);
+						selectedUnit = null;
+						unitMoving = false;
+						unitAttacking = false;
 					}
-					if (accessTile (gridPos).moveHighlighted){
+					else if (accessTile (gridPos).moveHighlighted){
 						removePossibleMovements (selectedUnit);
 						moveUnit (selectedUnit, gridPos);
 						selectedUnit = null;
+						unitMoving = false;
+					}
+					else if (accessTile (gridPos).attackHighlighted){
+						if (unitPosArray[gridPos.x][gridPos.y] != null){
+							if (unitToScript(unitPosArray [gridPos.x] [gridPos.y]).damage (5)){
+								Destroy (unitPosArray[gridPos.x][gridPos.y]);
+								unitPosArray [gridPos.x] [gridPos.y] = null;
+							}
+						}
 					}
 				}
 			}
@@ -391,13 +476,33 @@ public class BoardManager : MonoBehaviour {
 				selectedUnit = unitPosArray [gridPos.x] [gridPos.y];
 				if (selectedUnit != null){
 					showPossibleMovements (selectedUnit);
+					unitMoving = true;
 				}
 			}
 		}
 		else if (Input.GetMouseButtonDown (1)){
 			if (selectedUnit != null){
 				removePossibleMovements (selectedUnit);
+				removePossibleAttacks (selectedUnit);
 				selectedUnit = null;
+				unitMoving = false;
+				unitAttacking = false;
+			}
+		}
+		else if (Input.GetKeyDown ("a")){
+			if (selectedUnit != null){
+				if (unitMoving){
+					removePossibleMovements (selectedUnit);
+					showPossibleAttacks (selectedUnit);
+					unitMoving = false;
+					unitAttacking = true;
+				}
+				else if (unitAttacking){
+					removePossibleAttacks (selectedUnit);
+					showPossibleMovements (selectedUnit);
+					unitAttacking = false;
+					unitMoving = true;
+				}
 			}
 		}
 	}

@@ -290,6 +290,24 @@ Prefab:
       value: 
       objectReference: {fileID: 1609759884238802, guid: 97da31462b7d04045a45e64c76347736,
         type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: waterTileRed
+      value: 
+      objectReference: {fileID: 11400000, guid: 99c53f4c18ef04a41a61cba0b6b4c7e6,
+        type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: grassTileRed
+      value: 
+      objectReference: {fileID: 11400000, guid: cc5943dffaf93ac42894a2bbd10c5026,
+        type: 2}
+    - target: {fileID: 114010972984158284, guid: b6cd10d5ced0c5340bca5b147a88d45d,
+        type: 2}
+      propertyPath: mountainTileRed
+      value: 
+      objectReference: {fileID: 11400000, guid: 1bedbe195013df245bf92e3edcc28488,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6cd10d5ced0c5340bca5b147a88d45d, type: 2}
   m_IsPrefabParent: 0

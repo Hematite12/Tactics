@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BomberScript : UnitScript {
-
-	[SerializeField]
 	public int bomberMovement;
-	[SerializeField]
 	public string bomberMovementType;
+	public int bomberAttackRange;
 
 	public override int movement {
 		get {
@@ -18,6 +16,12 @@ public class BomberScript : UnitScript {
 	public override string movementType {
 		get {
 			return bomberMovementType;
+		}
+	}
+
+	public override int attackRange {
+		get {
+			return bomberAttackRange;
 		}
 	}
 }

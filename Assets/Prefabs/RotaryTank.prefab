@@ -109,10 +109,13 @@ MonoBehaviour:
   - {fileID: 1425999708880844, guid: 6c7996829f7738440a0c4367227ac726, type: 2}
   - {fileID: 1672781726616654, guid: 7feb05411b9fa214298d0938fb724c24, type: 2}
   - {fileID: 1394500104076416, guid: da750d910ab59dd4f845650b887493b0, type: 2}
-  healthDisplay: {fileID: 1547035907423902, guid: d72577216f5bbd7459c62cd41909e949,
-    type: 2}
-  rotaryMovement: 0
+  healthDisplay: {fileID: 0}
+  normalSprite: {fileID: 21300006, guid: e879cdc8f19f18647b6ba98ef5bcda95, type: 3}
+  redSprite: {fileID: 21300006, guid: 2570512793a2fa04f9919f5e8c4b1fa6, type: 3}
+  hasAnimator: 1
+  rotaryMovement: 6
   rotaryMovementType: tread
+  rotaryAttackRange: 0
 --- !u!212 &212091894534285222
 SpriteRenderer:
   m_ObjectHideFlags: 1

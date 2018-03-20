@@ -79,8 +79,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
+  health: 0
+  healthValues:
+  - {fileID: 1547035907423902, guid: d72577216f5bbd7459c62cd41909e949, type: 2}
+  - {fileID: 1742664705140458, guid: ffa5e50c5a0e5ec449ce60844f3039d8, type: 2}
+  - {fileID: 1408843590876050, guid: 05da5b58dff0ac4449bb6919656ea034, type: 2}
+  - {fileID: 1978599145404014, guid: ac81ad7337b4bc448965cdc3b1033eb9, type: 2}
+  - {fileID: 1282334368505354, guid: 1c5a209071eabbe47bff1751aace75a9, type: 2}
+  - {fileID: 1151873455346334, guid: 82e1ab5580eff6e42b2052f401c89201, type: 2}
+  - {fileID: 1296937426106254, guid: 6ab3488f962171e4093d6fb6746dff6d, type: 2}
+  - {fileID: 1425999708880844, guid: 6c7996829f7738440a0c4367227ac726, type: 2}
+  - {fileID: 1672781726616654, guid: 7feb05411b9fa214298d0938fb724c24, type: 2}
+  - {fileID: 1394500104076416, guid: da750d910ab59dd4f845650b887493b0, type: 2}
+  healthDisplay: {fileID: 0}
+  normalSprite: {fileID: 21300000, guid: c81aff2f01d0d26498bd4e68f426c064, type: 3}
+  redSprite: {fileID: 21300000, guid: 57089924fb2060844984dd45aaed1478, type: 3}
+  isRed: 0
   infantryMovement: 4
   infantryMovementType: walk
+  infantryAttackRange: 0
 --- !u!212 &212013678887629590
 SpriteRenderer:
   m_ObjectHideFlags: 1

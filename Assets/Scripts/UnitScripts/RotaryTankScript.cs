@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RotaryTankScript : UnitScript {
-
-	[SerializeField]
 	public int rotaryMovement;
-	[SerializeField]
 	public string rotaryMovementType;
+	public int rotaryAttackRange;
 
 	public override int movement {
 		get {
@@ -18,6 +16,12 @@ public class RotaryTankScript : UnitScript {
 	public override string movementType {
 		get {
 			return rotaryMovementType;
+		}
+	}
+
+	public override int attackRange {
+		get {
+			return rotaryAttackRange;
 		}
 	}
 }
